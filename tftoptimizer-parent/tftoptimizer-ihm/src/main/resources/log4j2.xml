@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="TRACE">
+	<Loggers>
+
+		<Root level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" level="DEBUG" />
+		</Root>
+
+		<Logger name="com.toteuch.tftoptimizer.ihm" level="TRACE" additivity="false">
+			<Appender-ref ref="Console" level="TRACE" />
+		</Logger>
+
+	</Loggers>
+	<Appenders>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+	</Appenders>
+</Configuration>

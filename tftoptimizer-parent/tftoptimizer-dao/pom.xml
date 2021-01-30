@@ -1,0 +1,40 @@
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.toteuch</groupId>
+		<artifactId>tftoptimizer-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>tftoptimizer-dao</artifactId>
+	<packaging>jar</packaging>
+	
+	<name>tftoptimizer-dao</name>
+	
+	<properties>
+		<jsoup.version>1.13.1</jsoup.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.toteuch</groupId>
+			<artifactId>tftoptimizer-domaine</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.toteuch</groupId>
+			<artifactId>tftoptimizer-transverse</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+	</dependencies>
+	
+</project>

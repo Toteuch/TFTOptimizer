@@ -87,20 +87,16 @@ public abstract class AbstractTFTOptimizerOperation<T> extends AsynchronousOpera
 	 */
 	protected void setBusyState(boolean isBusy) {
 		concierge.getMainFrame().setBusyState(isBusy);
-		concierge.getMainFrame().activateGlassPane(isBusy);
-//    	if(isBusy) {
-//    	_progressMonitor = new ProgressMonitor(
-//                concierge.getDialogOwner(),
-//                "TFTOptimizer Operation in Progress",
-//                description
-//                //ProgressMonitor.Options.MODAL,
-//                //ProgressMonitor.Options.CENTER,
-//                //,ProgressMonitor.Options.SHOW_STATUS
-//                );    		
-//    	_progressMonitor.show();
-//    	} else if(_progressMonitor != null) {
-//    		_progressMonitor.dispose();
-//    		_progressMonitor = null;
-//    	}
+		// concierge.getMainFrame().activateGlassPane(isBusy);
+		if (isBusy) {
+			_progressMonitor = new ProgressMonitor(concierge.getDialogOwner(), "TFTOptimizer Operation in Progress", description
+			// ProgressMonitor.Options.MODAL,
+			// ProgressMonitor.Options.CENTER,
+					, ProgressMonitor.Options.SHOW_STATUS);
+			_progressMonitor.show();
+		} else if (_progressMonitor != null) {
+			_progressMonitor.dispose();
+			_progressMonitor = null;
+		}
 	}
 }

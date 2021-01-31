@@ -19,6 +19,8 @@ public class Champion {
 	private Image image;
 	private String urlImage;
 	private List<PreferedItem> preferedItems;
+	private int score;
+	private List<Item> slamableItems;
 
 	@Override
 	public boolean equals(Object o) {

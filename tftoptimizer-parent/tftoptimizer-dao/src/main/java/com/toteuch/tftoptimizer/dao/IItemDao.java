@@ -1,13 +1,13 @@
 package com.toteuch.tftoptimizer.dao;
 
-import java.util.List;
+import java.util.Map;
 
 import com.toteuch.tftoptimizer.domaine.Item;
 
 public interface IItemDao {
-	public List<Item> getCombineds();
+	public Map<String, Item> getCombineds();
 
-	public List<Item> getComponents();
+	public Map<String, Item> getComponents();
 
 	public void emptyCache();
 }

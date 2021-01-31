@@ -9,6 +9,11 @@ public class PreferedItem {
 	private Item item;
 	private double presence;
 
+	public PreferedItem(Item item, double presence) {
+		this.item = item;
+		this.presence = presence;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PreferedItem) {

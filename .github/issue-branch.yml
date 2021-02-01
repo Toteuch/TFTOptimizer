@@ -1,0 +1,9 @@
+branchName: short
+autoCloseIssue: true
+branches:
+  - label: enhancement
+    name: develop
+    prefix: feature/
+  - label: bug
+    name: master
+    prefix: fix/

@@ -160,7 +160,7 @@ public class TFTOptimizerService extends TFTOptimizerAbstractService implements 
 	public List<Champion> filterByName(List<Champion> champs, String filter) {
 		List<Champion> filtered = new ArrayList<Champion>();
 		for (Champion c : champs) {
-			if (StringUtils.contains(c.getName(), filter)) {
+			if (StringUtils.contains(c.getName().toUpperCase(), filter.toUpperCase())) {
 				filtered.add(c);
 			}
 		}

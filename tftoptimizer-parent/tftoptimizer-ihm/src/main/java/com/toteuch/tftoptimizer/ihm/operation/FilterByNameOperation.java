@@ -28,4 +28,9 @@ public class FilterByNameOperation extends AbstractTFTOptimizerOperation<List<Ch
 		LOG.trace("Success on filtering champ list by name");
 		getConcierge().getMainFrame().setFilteredChampsList(champs);
 	}
+
+	@Override
+	protected void setBusyState(boolean isBusy) {
+		getConcierge().getMainFrame().setBusyState(isBusy);
+	}
 }

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.kdgregory.swinglib.components.MainFrame;
 import com.toteuch.tftoptimizer.domaine.Champion;
 import com.toteuch.tftoptimizer.domaine.Item;
+import com.toteuch.tftoptimizer.ihm.layout.WrapLayout;
+import com.toteuch.tftoptimizer.ihm.main.component.ChampSelectedPanel;
 import com.toteuch.tftoptimizer.ihm.main.component.ChampsScoreScrollPane;
 import com.toteuch.tftoptimizer.ihm.main.component.ComponentLabel;
 import com.toteuch.tftoptimizer.ihm.main.component.ComponentPanel;
 import com.toteuch.tftoptimizer.ihm.main.component.FilterField;
+import com.toteuch.tftoptimizer.ihm.main.component.SelectedChampsCheckBox;
 import com.toteuch.tftoptimizer.ihm.main.component.SidePane;
 import com.toteuch.tftoptimizer.ihm.operation.FilterByNameOperation;
 import com.toteuch.tftoptimizer.ihm.operation.SortByBestScoreOperation;
@@ -48,10 +52,12 @@ public class MainFrameController {
 
 	private JFrame mainFrame;
 	private JPanel mainPane;
+	private JPanel selectedChampsPane;
 	private JPanel sidePane;
 
 	private Map<Item, Integer> components;
 	private List<Champion> champs;
+	private List<Champion> selectedChamps;
 
 	public MainFrameController(Concierge concierge) {
 		this.concierge = concierge;
@@ -83,45 +89,15 @@ public class MainFrameController {
 		contentPane.setLayout(new GridBagLayout());
 
 		mainPane = createMainPane();
+		mainPane.setVisible(true);
 		GridBagConstraints c = new GridBagConstraints();
 		c.weightx = 0.5;
 		c.fill = GridBagConstraints.VERTICAL;
 		contentPane.add(mainPane, c);
 
-		sidePane = new SidePane(actionRegistry, HEIGHT, mainFrame, DEFAULT_ALWAYS_ON_TOP);
-		FilterField ff = (FilterField) ComponentsUtils.getRecursivelyFirstChildByName(sidePane, FilterField.NAME);
-		ff.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent e) {
-				filter();
-			}
-
-			public void removeUpdate(DocumentEvent e) {
-				filter();
-			}
-
-			public void insertUpdate(DocumentEvent e) {
-				filter();
-			}
-
-			private void filter() {
-				new FilterByNameOperation(concierge).start();
-			}
-		});
-		GridBagConstraints c1 = new GridBagConstraints();
-		c1.gridx = 1;
-		c1.fill = GridBagConstraints.VERTICAL;
-		c1.weightx = 0.5;
-		sidePane.setVisible(false);
-		contentPane.add(sidePane, c1);
-
-		return contentPane;
-	}
-
-	private JPanel createMainPane() {
-		JPanel mainPane = new JPanel();
-		mainPane.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-		mainPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		mainPane.setLayout(new GridBagLayout());
+		selectedChampsPane = createSelectedChampsPane();
+		selectedChampsPane.setVisible(false);
+		contentPane.add(selectedChampsPane, c);
 
 		JButton expandButton = new JButton(">");
 		expandButton.setMinimumSize(new Dimension(13, 10));
@@ -143,13 +119,58 @@ public class MainFrameController {
 			}
 		});
 		GridBagConstraints cExpand = new GridBagConstraints();
-		cExpand.gridx = 2;
+		cExpand.gridx = 1;
 		cExpand.gridy = 0;
 		cExpand.fill = GridBagConstraints.VERTICAL;
 
-		mainPane.add(expandButton, cExpand);
+		contentPane.add(expandButton, cExpand);
+
+		sidePane = new SidePane(actionRegistry, HEIGHT, mainFrame, DEFAULT_ALWAYS_ON_TOP);
+		FilterField ff = (FilterField) ComponentsUtils.getRecursivelyFirstChildByName(sidePane, FilterField.NAME);
+		ff.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			private void filter() {
+				new FilterByNameOperation(concierge).start();
+			}
+		});
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx = 2;
+		c1.fill = GridBagConstraints.VERTICAL;
+		c1.weightx = 0.5;
+		sidePane.setVisible(false);
+		contentPane.add(sidePane, c1);
+
+		return contentPane;
+	}
+
+	private JPanel createMainPane() {
+		JPanel mainPane = new JPanel();
+		mainPane.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		mainPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		mainPane.setLayout(new GridBagLayout());
 
 		return mainPane;
+	}
+
+	public JPanel createSelectedChampsPane() {
+		selectedChamps = new ArrayList<Champion>();
+		JPanel selectedChampsPanel = new JPanel();
+		selectedChampsPanel.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		selectedChampsPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		selectedChampsPanel.setLayout(new WrapLayout(WrapLayout.LEFT));
+
+		return selectedChampsPanel;
 	}
 
 //----------------------------------------------------------------------------
@@ -212,6 +233,18 @@ public class MainFrameController {
 			filterField.setText("");
 		}
 
+		// reset SelectedChampsPanel data & visibility
+		if (selectedChampsPane.isVisible()) {
+			SelectedChampsCheckBox sccb = (SelectedChampsCheckBox) ComponentsUtils.getRecursivelyFirstChildByName(sidePane, SelectedChampsCheckBox.NAME);
+			selectedChampsPane.setVisible(false);
+			mainPane.setVisible(true);
+			sccb.setSelected(false);
+			while (selectedChampsPane.getComponents().length > 0) {
+				selectedChampsPane.remove(0);
+			}
+			selectedChamps = new ArrayList<Champion>();
+		}
+
 		// sort by best score for reset champs
 		new SortByBestScoreOperation(concierge).start();
 	}
@@ -224,6 +257,39 @@ public class MainFrameController {
 	@SuppressWarnings("unchecked")
 	public void setFilteredChampsList(List<Champion> filteredChamps) {
 		displayChamps(filteredChamps);
+	}
+
+	public void swtichMainFrameView() {
+		SelectedChampsCheckBox sccb = (SelectedChampsCheckBox) ComponentsUtils.getRecursivelyFirstChildByName(sidePane, SelectedChampsCheckBox.NAME);
+		if (this.mainPane.isVisible()) {
+			this.mainPane.setVisible(false);
+			this.selectedChampsPane.setVisible(true);
+			sccb.setSelected(true);
+		} else {
+			this.mainPane.setVisible(true);
+			this.selectedChampsPane.setVisible(false);
+			sccb.setSelected(false);
+		}
+	}
+
+	public void addSelectedChamp(Champion c) {
+		if (!selectedChamps.contains(c)) {
+			selectedChamps.add(c);
+			addChampSelectedPanel(c);
+			FilterField filterField = (FilterField) ComponentsUtils.getRecursivelyFirstChildByName(sidePane, FilterField.NAME);
+			if (null != filterField && StringUtils.isNoneEmpty(filterField.getText())) {
+				filterField.setText("");
+				new SortByBestScoreOperation(concierge).start();
+			}
+		}
+
+	}
+
+	public void removeSelectedChamp(Champion c) {
+		if (selectedChamps.contains(c)) {
+			selectedChamps.remove(c);
+			removeChampSelectedPanel(c);
+		}
 	}
 
 //----------------------------------------------------------------------------
@@ -280,9 +346,9 @@ public class MainFrameController {
 			for (List<Champion> l : args) {
 				filteredChamp = l;
 			}
-			champScrollPane = new ChampsScoreScrollPane(filteredChamp);
+			champScrollPane = new ChampsScoreScrollPane(filteredChamp, actionRegistry);
 		} else {
-			champScrollPane = new ChampsScoreScrollPane(champs);
+			champScrollPane = new ChampsScoreScrollPane(champs, actionRegistry);
 		}
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
@@ -303,5 +369,16 @@ public class MainFrameController {
 	private void refreshView(Component c) {
 		c.revalidate();
 		c.repaint();
+	}
+
+	private void addChampSelectedPanel(Champion c) {
+		ChampSelectedPanel csp = new ChampSelectedPanel(c);
+		selectedChampsPane.add(csp);
+
+	}
+
+	private void removeChampSelectedPanel(Champion c) {
+		ChampSelectedPanel csp = (ChampSelectedPanel) ComponentsUtils.getRecursivelyFirstChildByName(selectedChampsPane, String.format("%s%s", ChampSelectedPanel.PREFIX, c.getName()));
+		selectedChampsPane.remove(csp);
 	}
 }

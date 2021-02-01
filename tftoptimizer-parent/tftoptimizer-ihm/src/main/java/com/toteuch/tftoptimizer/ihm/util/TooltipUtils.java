@@ -20,7 +20,7 @@ public class TooltipUtils {
 				}
 			}
 			if (null != item.getCombination()) {
-				sb.append(String.format("<br>Combination : %s + %s", item.getCombination().get(0), item.getCombination().get(1)));
+				sb.append(String.format("<br>Combination : %s + %s", item.getCombination().get(0).getName(), item.getCombination().get(1).getName()));
 			}
 		}
 		sb.append("</p></body></html>");

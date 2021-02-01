@@ -39,16 +39,20 @@ public class MenuPanel extends JPanel {
 		c.weighty = 0;
 		add(pinCheckBox, c);
 
-		ResetButton resetButton = new ResetButton(actionRegistry, DEFAULT_ICON_SIZE);
+		SelectedChampsCheckBox sccBox = new SelectedChampsCheckBox(actionRegistry, DEFAULT_ICON_SIZE);
 		c.gridx = 2;
+		add(sccBox, c);
+
+		ResetButton resetButton = new ResetButton(actionRegistry, DEFAULT_ICON_SIZE);
+		c.gridx = 3;
 		add(resetButton, c);
 
 		MoveButton moveButton = new MoveButton(mainFrame, DEFAULT_ICON_SIZE);
-		c.gridx = 3;
+		c.gridx = 4;
 		add(moveButton, c);
 
 		ExitButton exitButton = new ExitButton(actionRegistry, DEFAULT_ICON_SIZE);
-		c.gridx = 4;
+		c.gridx = 5;
 		add(exitButton, c);
 	}
 

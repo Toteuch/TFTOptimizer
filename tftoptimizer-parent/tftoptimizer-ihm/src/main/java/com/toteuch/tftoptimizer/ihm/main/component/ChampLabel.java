@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 
 import com.toteuch.tftoptimizer.domaine.Champion;
+import com.toteuch.tftoptimizer.ihm.main.ActionRegistry;
 import com.toteuch.tftoptimizer.ihm.util.ColorUtils;
 import com.toteuch.tftoptimizer.ihm.util.ImageUtils;
 
@@ -18,6 +19,15 @@ public class ChampLabel extends JLabel {
 	private final static int CHAMP_ICON_S = 55;
 
 	public ChampLabel(Champion champ, Color bg) {
+		build(champ, bg);
+	}
+
+	public ChampLabel(Champion champ, Color bg, ActionRegistry actionRegistry) {
+		addMouseListener(actionRegistry.addToSelectedChampion);
+		build(champ, bg);
+	}
+
+	public void build(Champion champ, Color bg) {
 		String name = champ.getName();
 		setName(String.format("%s%s", PREFIX, name));
 		String text = name;
@@ -30,9 +40,9 @@ public class ChampLabel extends JLabel {
 		setVerticalTextPosition(JLabel.TOP);
 		setHorizontalTextPosition(JLabel.CENTER);
 		setIconTextGap(0);
-
 		setBackground(bg);
 		setForeground(ColorUtils.getReadable(bg));
 		setToolTipText(champ.getName());
 	}
+
 }

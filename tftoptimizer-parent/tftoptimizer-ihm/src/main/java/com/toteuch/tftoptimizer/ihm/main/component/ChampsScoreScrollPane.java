@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import com.toteuch.tftoptimizer.domaine.Champion;
 import com.toteuch.tftoptimizer.ihm.layout.WrapLayout;
+import com.toteuch.tftoptimizer.ihm.main.ActionRegistry;
 
 public class ChampsScoreScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
@@ -16,14 +17,14 @@ public class ChampsScoreScrollPane extends JScrollPane {
 	public final static String NAME = "CHAMP_SCORE_SCROLL_PANE";
 	private Map<String, ChampScorePanel> champScorePanels = new HashMap<String, ChampScorePanel>();
 
-	public ChampsScoreScrollPane(List<Champion> champs) {
+	public ChampsScoreScrollPane(List<Champion> champs, ActionRegistry actionRegistry) {
 		// Mandatory JPanel contained by ScrollPane & containing ChampPanel
 		JPanel subScrollPanePanel = new JPanel();
 		subScrollPanePanel.setLayout(new WrapLayout(WrapLayout.LEFT));
 		add(subScrollPanePanel);
 
 		for (Champion champ : champs) {
-			ChampScorePanel champScorePanel = new ChampScorePanel(champ);
+			ChampScorePanel champScorePanel = new ChampScorePanel(champ, actionRegistry);
 			subScrollPanePanel.add(champScorePanel);
 			champScorePanels.put(champScorePanel.getName(), champScorePanel);
 		}

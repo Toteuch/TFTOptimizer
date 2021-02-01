@@ -22,7 +22,7 @@ public class SlamableItemsPanel extends JPanel {
 
 	public SlamableItemsPanel(String champName, List<Item> slamables, Color bg) {
 		setName(String.format("%s%s", PREFIX, champName));
-		setLayout(new WrapLayout());
+		setLayout(new WrapLayout(WrapLayout.LEFT));
 		setBackground(bg);
 		setForeground(ColorUtils.getReadable(bg));
 		if (null == slamables || slamables.isEmpty()) {

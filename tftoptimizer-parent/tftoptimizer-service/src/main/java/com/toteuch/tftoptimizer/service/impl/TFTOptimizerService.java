@@ -156,4 +156,14 @@ public class TFTOptimizerService extends TFTOptimizerAbstractService implements 
 		}
 		return map;
 	}
+
+	public List<Champion> filterByName(List<Champion> champs, String filter) {
+		List<Champion> filtered = new ArrayList<Champion>();
+		for (Champion c : champs) {
+			if (StringUtils.contains(c.getName(), filter)) {
+				filtered.add(c);
+			}
+		}
+		return filtered;
+	}
 }

@@ -14,4 +14,6 @@ public interface ITFTOptimizerService {
 	public void emptyCache();
 
 	public List<Champion> getChampionFromInput(List<Champion> champsToSort, Map<Item, Integer> components);
+
+	public List<Champion> filterByName(List<Champion> champs, String filter);
 }

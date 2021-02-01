@@ -1,5 +1,6 @@
 package com.toteuch.tftoptimizer.ihm.util;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -21,5 +22,13 @@ public class ImageUtils {
 	public static ImageIcon getScaledImageIconFromClassLoader(String fp, int s) {
 		Image img = new ImageIcon(ClassLoader.getSystemResource(fp)).getImage();
 		return getScaledImageIcon(img, s);
+	}
+
+	public static ImageIcon BlackAndWhiteScaledImageIconFromClassLoader(String fp, int s) {
+		BufferedImage resizedImg = new BufferedImage(s, s, BufferedImage.TYPE_BYTE_BINARY);
+		Graphics2D graphic = resizedImg.createGraphics();
+		graphic.drawImage(getScaledImageIconFromClassLoader(fp, s).getImage(), 0, 0, Color.WHITE, null);
+		graphic.dispose();
+		return new ImageIcon(resizedImg);
 	}
 }
